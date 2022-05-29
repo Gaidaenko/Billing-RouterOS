@@ -14,6 +14,8 @@ namespace DisableRemoteAccess
 
         public static void enable()
         {
+            try
+            {
                 using (ITikConnection connection = ConnectionFactory.CreateConnection(TikConnectionType.Api))
                 {
                     connection.Open(Fields.serverName, USER, PASS);
@@ -23,19 +25,36 @@ namespace DisableRemoteAccess
                     var disableRule = connection.CreateCommandAndParameters("/ip/address/enable", TikSpecialProperties.Id, id);
                     disableRule.ExecuteNonQuery();
                 }
+            }
+            catch (Exception e)
+            {
+
+                
+              
+            }               
         }
 
         public static void disable()
         {
-            using (ITikConnection connection = ConnectionFactory.CreateConnection(TikConnectionType.Api))
+            try
             {
-                connection.Open(Fields.serverName, USER, PASS);
+                using (ITikConnection connection = ConnectionFactory.CreateConnection(TikConnectionType.Api))
+                {
+                    connection.Open(Fields.serverName, USER, PASS);
 
-                var natRule = connection.CreateCommandAndParameters("/ip/address/print", "comment", Fields.addrNameRule).ExecuteList();
-                var id = natRule.Single().GetId();
-                var enableRule = connection.CreateCommandAndParameters("/ip/address/disable", TikSpecialProperties.Id, id);
-                enableRule.ExecuteNonQuery();
+                    var natRule = connection.CreateCommandAndParameters("/ip/address/print", "comment", Fields.addrNameRule).ExecuteList();
+                    var id = natRule.Single().GetId();
+                    var enableRule = connection.CreateCommandAndParameters("/ip/address/disable", TikSpecialProperties.Id, id);
+                    enableRule.ExecuteNonQuery();
+                }
             }
+            catch (Exception e)
+            {
+
+                
+
+
+            }          
         }
     }
 }

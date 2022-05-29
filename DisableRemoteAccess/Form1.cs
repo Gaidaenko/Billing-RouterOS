@@ -16,11 +16,16 @@ namespace DisableRemoteAccess
         public Form1()
         {
             InitializeComponent();
-            openXlsx();
+           // openXlsx();
         }
+
 
         public void openXlsx()
         {
+            Color launched = Color.Green;
+            label1.ForeColor = launched;
+            label1.Text = "Мониторинг оплаты запущен.";
+
             try
             {
                 Excel.Application xlsApp = new Excel.Application();
@@ -51,7 +56,6 @@ namespace DisableRemoteAccess
                     Fields.serverName = dataArr[Fields.serverNameRow, 5].ToString();
                     Fields.addrNameRule = dataArr[Fields.addrNameRuleRow, 6].ToString();
 
-
                     if (Fields.paymentState == "Оплачено")
                     {
                         Action.enable();
@@ -76,14 +80,14 @@ namespace DisableRemoteAccess
             }
             catch (Exception s)
             {
-                label1.Text = "Не удалось открыть файл! Возмжные причины:\n 1. Файл перемещен. \n 2. Не заполнена одна из требуемых строк для проверки оплаты.";
+                Color warning = Color.Red;
+                label1.ForeColor = warning;
+                label1.Text = "Не удалось открыть файл! Возмжные причины:\n1. Файл xlsx перемещен или переименован. \n2. Не заполнена одна из требуемых строк для проверки оплаты.";
             }
 
-         //   Thread.Sleep(30000);
-         //   openXlsx();
+
+            
         }
-
-
         public void killProcess()
         {
             Process[] List;
@@ -93,40 +97,14 @@ namespace DisableRemoteAccess
                 process.Kill();
             }
         }
-
-
-        private void label1_Click(object sender, EventArgs e)
+        public void label1_Click(object sender, EventArgs e)
         {
-            /*using (ITikConnection connection = ConnectionFactory.CreateConnection(TikConnectionType.Api))
-            {
-             //   connection.Open(HOST, USER, PASS);
 
-                int n = 1;
-
-                var natRule = connection.CreateCommandAndParameters("/ip/route/print", "dst-address", Action.route).ExecuteList();
-                var value = natRule.Count();
-                if (value == n)
-                {
-                    Color colorOn = Color.Blue;
-                    label1.ForeColor = colorOn; 
-                    label1.Text = ("Текущий статус сервера\n          ДОСТУПЕН!");
-                }
-            }
-            using (ITikConnection connection = ConnectionFactory.CreateConnection(TikConnectionType.Api))
-            {              
-            //    connection.Open(HOST, USER, PASS);
-              
-                int i = 0;
-                
-                var natRule = connection.CreateCommandAndParameters("/ip/route/print", "dst-address", Action.route).ExecuteList();
-                var value = natRule.Count();
-                if (value == i)
-                {
-                    Color colorOff_n = Color.Red;
-                    label1.ForeColor = colorOff_n;
-                    label1.Text = ("Текущий статус сервера\n        НЕ ДОСТУПЕН!");
-                }
-            }*/
+        }
+        private void button1_Click(object sender, EventArgs e)
+        {
+            openXlsx();
+     
         }
     }
 }
