@@ -18,8 +18,6 @@ namespace DisableRemoteAccess
             InitializeComponent();
            // openXlsx();
         }
-
-
         public void openXlsx()
         {
             Color launched = Color.Green;
@@ -29,6 +27,7 @@ namespace DisableRemoteAccess
             try
             {
                 Excel.Application xlsApp = new Excel.Application();
+                
                 Workbook ObjWorkBook = xlsApp.Workbooks.Open
                                     (Filename: Fields.fileXlsx,
                                      UpdateLinks: 0,
@@ -43,7 +42,12 @@ namespace DisableRemoteAccess
                                      AddToMru: true,
                                      Local: false,
                                      CorruptLoad: false);
-            Next:
+
+                Worksheet worksheet = xlsApp.Worksheets[1];
+                worksheet.Activate();
+
+            NextRow:
+
                 Range Rng, CheckingRow;
                 Rng = xlsApp.get_Range("A2", "F34");
                 var dataArr = (object[,])Rng.Value;
@@ -71,7 +75,7 @@ namespace DisableRemoteAccess
                     Fields.addrNameRuleRow++;
                     Fields.serverNameRow++;
 
-                    goto Next;
+                    goto NextRow;
                 }
                 else
                 {
@@ -82,12 +86,10 @@ namespace DisableRemoteAccess
             {
                 Color warning = Color.Red;
                 label1.ForeColor = warning;
-                label1.Text = "Не удалось открыть файл! Возмжные причины:\n1. Файл xlsx перемещен или переименован. \n2. Не заполнена одна из требуемых строк для проверки оплаты.";
+                label1.Text = "Не удалось запустить мониторинг!\n1. Возможно фай xlsx открыт, перемещен или переименован. \n2. Не заполнена одна из требуемых строк для проверки оплаты.";
             }
-
-
-            
         }
+
         public void killProcess()
         {
             Process[] List;
@@ -104,7 +106,12 @@ namespace DisableRemoteAccess
         private void button1_Click(object sender, EventArgs e)
         {
             openXlsx();
-     
+
+            Fields.customerNameRow = 1;
+            Fields.paymentStateRow = 1;
+
+            Fields.addrNameRuleRow = 1;
+            Fields.serverNameRow = 1;
         }
     }
 }
