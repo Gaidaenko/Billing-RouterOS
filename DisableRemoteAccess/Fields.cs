@@ -8,7 +8,6 @@ namespace DisableRemoteAccess
 {
     public static class Fields
     {
-
         public static string fileXlsx = @"C:\Data\Clients.xlsx";     
         public static string customerName;                           
         public static string paymentState;                           
@@ -18,7 +17,6 @@ namespace DisableRemoteAccess
         public static string serverName;                             
         public static string addrNameRule;                             
         public static int serverNameRow =1;                          
-        public static int addrNameRuleRow =1;                            
-
+        public static int addrNameRuleRow =1;
     }
 }

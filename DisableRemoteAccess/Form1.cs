@@ -8,6 +8,7 @@ using tik4net;
 using Color = System.Drawing.Color;
 using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace DisableRemoteAccess
 {
@@ -16,13 +17,13 @@ namespace DisableRemoteAccess
         public Form1()
         {
             InitializeComponent();
-           // openXlsx();
+            openXlsx();
         }
-        public void openXlsx()
+        public async Task openXlsx()
         {
             Color launched = Color.Green;
             label1.ForeColor = launched;
-            label1.Text = "Мониторинг оплаты запущен.";
+            label1.Text = "Мониторинг оплаты запущен!";
 
             try
             {
@@ -71,7 +72,6 @@ namespace DisableRemoteAccess
 
                     Fields.customerNameRow++;
                     Fields.paymentStateRow++;
-
                     Fields.addrNameRuleRow++;
                     Fields.serverNameRow++;
 
@@ -88,6 +88,9 @@ namespace DisableRemoteAccess
                 label1.ForeColor = warning;
                 label1.Text = "Не удалось запустить мониторинг!\n1. Возможно фай xlsx открыт, перемещен или переименован. \n2. Не заполнена одна из требуемых строк для проверки оплаты.";
             }
+
+            await Task.Delay(TimeSpan.FromMinutes(30));
+            openXlsx();
         }
 
         public void killProcess()
@@ -98,10 +101,11 @@ namespace DisableRemoteAccess
             {
                 process.Kill();
             }
-        }
-        public void label1_Click(object sender, EventArgs e)
-        {
 
+            Fields.customerNameRow = 1;
+            Fields.paymentStateRow = 1;
+            Fields.addrNameRuleRow = 1;
+            Fields.serverNameRow = 1;
         }
         private void button1_Click(object sender, EventArgs e)
         {
@@ -109,9 +113,12 @@ namespace DisableRemoteAccess
 
             Fields.customerNameRow = 1;
             Fields.paymentStateRow = 1;
-
             Fields.addrNameRuleRow = 1;
             Fields.serverNameRow = 1;
+        }
+        public void label1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
