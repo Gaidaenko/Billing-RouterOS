@@ -19,6 +19,7 @@ namespace DisableRemoteAccess
             InitializeComponent();
             openXlsx();
         }
+
         public async Task openXlsx()
         {
             Color launched = Color.Green;
@@ -89,7 +90,7 @@ namespace DisableRemoteAccess
                 label1.Text = "Не удалось запустить мониторинг!\n1. Возможно фай xlsx открыт, перемещен или переименован. \n2. Не заполнена одна из требуемых строк для проверки оплаты.";
             }
 
-            await Task.Delay(TimeSpan.FromMinutes(30));
+            await Task.Delay(TimeSpan.FromMinutes(60));
             openXlsx();
         }
 
@@ -102,23 +103,24 @@ namespace DisableRemoteAccess
                 process.Kill();
             }
 
-            Fields.customerNameRow = 1;
-            Fields.paymentStateRow = 1;
-            Fields.addrNameRuleRow = 1;
-            Fields.serverNameRow = 1;
+             Fields.customerNameRow = 1;
+             Fields.paymentStateRow = 1;
+             Fields.addrNameRuleRow = 1;
+             Fields.serverNameRow = 1; 
         }
         private void button1_Click(object sender, EventArgs e)
         {
             openXlsx();
 
-            Fields.customerNameRow = 1;
-            Fields.paymentStateRow = 1;
-            Fields.addrNameRuleRow = 1;
-            Fields.serverNameRow = 1;
         }
         public void label1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void adoutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("v1.0 Billing VMs");
         }
     }
 }

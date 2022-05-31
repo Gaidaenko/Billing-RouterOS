@@ -9,9 +9,8 @@ namespace DisableRemoteAccess
 {
     public static class Action
     {
-        public static string USER = "userApi";
+        public static string USER = "apiUser";
         public static string PASS = "Password";
-
         public static void enable()
         {
             try

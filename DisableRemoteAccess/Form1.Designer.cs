@@ -33,6 +33,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.button1 = new System.Windows.Forms.Button();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.adoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -57,11 +60,28 @@
             // 
             this.button1.Location = new System.Drawing.Point(35, 34);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(84, 49);
+            this.button1.Size = new System.Drawing.Size(115, 49);
             this.button1.TabIndex = 4;
-            this.button1.Text = "Запустить";
+            this.button1.Text = "Проверить статус сейчас!";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.adoutToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(731, 24);
+            this.menuStrip1.TabIndex = 5;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // adoutToolStripMenuItem
+            // 
+            this.adoutToolStripMenuItem.Name = "adoutToolStripMenuItem";
+            this.adoutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
+            this.adoutToolStripMenuItem.Text = "Adout";
+            this.adoutToolStripMenuItem.Click += new System.EventHandler(this.adoutToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -71,9 +91,13 @@
             this.ClientSize = new System.Drawing.Size(731, 377);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "BIT-Service. Billing VMs.";
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -83,6 +107,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem adoutToolStripMenuItem;
     }
 }
 
