@@ -98,16 +98,21 @@ namespace DisableRemoteAccess
         {
             Process[] List;
             List = Process.GetProcessesByName("EXCEL");
-            foreach (var process in List)
+           
+            if (List != null)
             {
-                process.Kill();
+                foreach (var process in List)
+                {
+                    process.Kill();
+                }
             }
 
-             Fields.customerNameRow = 1;
-             Fields.paymentStateRow = 1;
-             Fields.addrNameRuleRow = 1;
-             Fields.serverNameRow = 1; 
+              Fields.customerNameRow = 1;
+              Fields.paymentStateRow = 1;
+              Fields.addrNameRuleRow = 1;
+              Fields.serverNameRow = 1;  
         }
+
         private void button1_Click(object sender, EventArgs e)
         {
             openXlsx();
@@ -117,7 +122,6 @@ namespace DisableRemoteAccess
         {
 
         }
-
         private void adoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show("v1.0 Billing VMs");
