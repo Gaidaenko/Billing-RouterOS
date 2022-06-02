@@ -9,6 +9,7 @@ using Color = System.Drawing.Color;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using Timer = System.Windows.Forms.Timer;
 
 namespace DisableRemoteAccess
 {
@@ -19,7 +20,6 @@ namespace DisableRemoteAccess
             InitializeComponent();
             openXlsx();
         }
-
         public async Task openXlsx()
         {
             Color launched = Color.Green;
@@ -28,6 +28,9 @@ namespace DisableRemoteAccess
 
             try
             {
+                DateTime dateTime = DateTime.Now;
+                label2.Text = "Время запуска проверки\n " + dateTime.ToString();
+
                 Excel.Application xlsApp = new Excel.Application();
                 
                 Workbook ObjWorkBook = xlsApp.Workbooks.Open
@@ -48,13 +51,11 @@ namespace DisableRemoteAccess
                 Worksheet worksheet = xlsApp.Worksheets[1];
                 worksheet.Activate();
 
-            NextRow:
-
                 Range Rng, CheckingRow;
                 Rng = xlsApp.get_Range("A2", "F34");
                 var dataArr = (object[,])Rng.Value;
 
-                if (dataArr[Fields.customerNameRow, Fields.paymentStateRow] != null && dataArr[Fields.addrNameRuleRow, Fields.serverNameRow] != null)
+                while (dataArr[Fields.customerNameRow, Fields.paymentStateRow] != null && dataArr[Fields.addrNameRuleRow, Fields.serverNameRow] != null)
                 {
                     Fields.customerName = dataArr[Fields.customerNameRow, 3].ToString();
                     Fields.paymentState = dataArr[Fields.paymentStateRow, 4].ToString();
@@ -76,24 +77,21 @@ namespace DisableRemoteAccess
                     Fields.addrNameRuleRow++;
                     Fields.serverNameRow++;
 
-                    goto NextRow;
                 }
-                else
-                {
+
                     killProcess();
-                }
+
             }
             catch (Exception s)
             {
                 Color warning = Color.Red;
                 label1.ForeColor = warning;
-                label1.Text = "Не удалось запустить мониторинг!\n1. Возможно фай xlsx открыт, перемещен или переименован. \n2. Не заполнена одна из требуемых строк для проверки оплаты.";
+                label1.Text ="Не удалось запустить мониторинг!\n1. Возможно фай xlsx открыт, перемещен или переименован. \n2. Не заполнена одна из требуемых строк для проверки оплаты.";
             }
 
-            await Task.Delay(TimeSpan.FromMinutes(60));
+            await Task.Delay(TimeSpan.FromMinutes(30));
             openXlsx();
         }
-
         public void killProcess()
         {
             Process[] List;
@@ -110,13 +108,11 @@ namespace DisableRemoteAccess
               Fields.customerNameRow = 1;
               Fields.paymentStateRow = 1;
               Fields.addrNameRuleRow = 1;
-              Fields.serverNameRow = 1;  
+              Fields.serverNameRow = 1;
         }
-
         private void button1_Click(object sender, EventArgs e)
         {
             openXlsx();
-
         }
         public void label1_Click(object sender, EventArgs e)
         {
@@ -124,7 +120,12 @@ namespace DisableRemoteAccess
         }
         private void adoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("v1.0 Billing VMs");
+            MessageBox.Show("Billing VMs v1.0");
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
