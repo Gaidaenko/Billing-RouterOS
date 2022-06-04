@@ -31,8 +31,7 @@ namespace DisableRemoteAccess
                 DateTime dateTime = DateTime.Now;
                 label2.Text = "Время запуска проверки\n " + dateTime.ToString();
 
-                Excel.Application xlsApp = new Excel.Application();
-                
+                Excel.Application xlsApp = new Excel.Application();               
                 Workbook ObjWorkBook = xlsApp.Workbooks.Open
                                     (Filename: Fields.fileXlsx,
                                      UpdateLinks: 0,
@@ -76,11 +75,16 @@ namespace DisableRemoteAccess
                     Fields.paymentStateRow++;
                     Fields.addrNameRuleRow++;
                     Fields.serverNameRow++;
-
                 }
+           
+                ObjWorkBook.Close();
+                xlsApp.Application.Quit();
+                xlsApp = null;
+                ObjWorkBook = null;
+                dataArr = null;
+                Rng = null;               
 
-                    killProcess();
-
+                closeXlsx();
             }
             catch (Exception s)
             {
@@ -89,22 +93,14 @@ namespace DisableRemoteAccess
                 label1.Text ="Не удалось запустить мониторинг!\n1. Возможно фай xlsx открыт, перемещен или переименован. \n2. Не заполнена одна из требуемых строк для проверки оплаты.";
             }
 
-            await Task.Delay(TimeSpan.FromMinutes(30));
+            await Task.Delay(TimeSpan.FromMinutes(5));
             openXlsx();
         }
-        public void killProcess()
-        {
-            Process[] List;
-            List = Process.GetProcessesByName("EXCEL");
-           
-            if (List != null)
-            {
-                foreach (var process in List)
-                {
-                    process.Kill();
-                }
-            }
 
+        public void closeXlsx()
+        {
+              Process List = Process.GetProcessesByName("EXCEL").Last();
+           
               Fields.customerNameRow = 1;
               Fields.paymentStateRow = 1;
               Fields.addrNameRuleRow = 1;
@@ -114,15 +110,14 @@ namespace DisableRemoteAccess
         {
             openXlsx();
         }
-        public void label1_Click(object sender, EventArgs e)
-        {
-
-        }
         private void adoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Billing VMs v1.0");
         }
+        public void label1_Click(object sender, EventArgs e)
+        {
 
+        }
         private void label2_Click(object sender, EventArgs e)
         {
 
