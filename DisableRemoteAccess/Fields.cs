@@ -18,5 +18,8 @@ namespace DisableRemoteAccess
         public static int paymentStateRow = 1;                                                          
         public static int serverNameRow = 1;                          
         public static int addrNameRuleRow = 1;
+
+        public static string addrListON;
+        public static string addrListOFF;
     }
 }

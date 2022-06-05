@@ -9,8 +9,8 @@ namespace DisableRemoteAccess
 {
     public static class Action
     {
-        public static string USER = "yg";
-        public static string PASS = "Gfccdjhl,71924";
+        public static string USER = "login";
+        public static string PASS = "apiPassword";       
         public static void enable()
         {
             try
@@ -23,14 +23,27 @@ namespace DisableRemoteAccess
                     var id = natRule.Single().GetId();
                     var disableRule = connection.CreateCommandAndParameters("/ip/address/enable", TikSpecialProperties.Id, id);
                     disableRule.ExecuteNonQuery();
+
+                    foreach (var result in natRule)
+                    {
+                        var items = result.Words.GetEnumerator();
+
+                        while (items.MoveNext())
+                        {
+                                
+                            if (items.Current.Key == "disabled" && items.Current.Value == "true")               
+                            {
+                                // shutdown notice
+                            }
+                        }
+                    } 
                 }
             }
             catch (Exception e)
             {
 
-                
-              
-            }               
+                //  connection exception
+            }
         }
 
         public static void disable()
@@ -45,15 +58,27 @@ namespace DisableRemoteAccess
                     var id = natRule.Single().GetId();
                     var enableRule = connection.CreateCommandAndParameters("/ip/address/disable", TikSpecialProperties.Id, id);
                     enableRule.ExecuteNonQuery();
+
+                    foreach (var result in natRule)
+                    {
+                        var items = result.Words.GetEnumerator();
+
+                        while (items.MoveNext())
+                        {
+                            if (items.Current.Key == "disabled" && items.Current.Value == "false")             
+                            {
+                                //activation notice
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception e)
             {
 
-                
+                // connection exception
 
-
-            }          
+            }
         }
     }
 }
