@@ -9,8 +9,8 @@ namespace DisableRemoteAccess
 {
     public static class Action
     {
-        public static string USER = "login";
-        public static string PASS = "apiPassword";       
+        public static string USER = "yg";
+        public static string PASS = "Gfccdjhl,71924";       
         public static void enable()
         {
             try
@@ -34,6 +34,7 @@ namespace DisableRemoteAccess
                             if (items.Current.Key == "disabled" && items.Current.Value == "true")               
                             {
                                 // shutdown notice
+                                EmailNotification.messageAccessEnabled();
                             }
                         }
                     } 
@@ -68,6 +69,7 @@ namespace DisableRemoteAccess
                             if (items.Current.Key == "disabled" && items.Current.Value == "false")             
                             {
                                 //activation notice
+                                EmailNotification.messageAccessDisabled();
                             }
                         }
                     }
