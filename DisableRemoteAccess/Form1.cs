@@ -31,7 +31,7 @@ namespace DisableRemoteAccess
                 DateTime dateTime = DateTime.Now;
                 label2.Text = "Время запуска проверки\n " + dateTime.ToString();
 
-                Excel.Application xlsApp = new Excel.Application();               
+                Excel.Application xlsApp = new Excel.Application();
                 Workbook ObjWorkBook = xlsApp.Workbooks.Open
                                     (Filename: Fields.fileXlsx,
                                      UpdateLinks: 0,
@@ -50,17 +50,20 @@ namespace DisableRemoteAccess
                 Worksheet worksheet = xlsApp.Worksheets[1];
                 worksheet.Activate();
 
-                Range Rng, CheckingRow;
-                Rng = xlsApp.get_Range("A2", "F34");
+                Range Rng, RngMail; 
+                Rng = xlsApp.get_Range("A2", "D100");
                 var dataArr = (object[,])Rng.Value;
 
-                while (dataArr[Fields.customerNameRow, Fields.paymentStateRow] != null && dataArr[Fields.addrNameRuleRow, Fields.serverNameRow] != null)
-                {
-                    Fields.customerName = dataArr[Fields.customerNameRow, 3].ToString();
-                    Fields.paymentState = dataArr[Fields.paymentStateRow, 4].ToString();
+                RngMail = xlsApp.get_Range("E2", "E100");                                    // диапазон для проверки мейлов в xlsx
+                var dataArrMail = (object[,])RngMail.Value;                                 // явно приводим диапазон к типу данных object двумерному массиву
 
-                    Fields.serverName = dataArr[Fields.serverNameRow, 5].ToString();
-                    Fields.addrNameRule = dataArr[Fields.addrNameRuleRow, 6].ToString();
+                while (dataArr[Fields.customerNameRow, Fields.paymentStateRow] != null && dataArr[Fields.addrNameRuleRow, Fields.serverNameRow] != null && dataArrMail[Fields.addrMailRow, 1] != null)
+                {
+                    Fields.customerName = dataArr[Fields.customerNameRow, 1].ToString();
+                    Fields.paymentState = dataArr[Fields.paymentStateRow, 2].ToString();
+                    Fields.serverName = dataArr[Fields.serverNameRow, 3].ToString();
+                    Fields.addrNameRule = dataArr[Fields.addrNameRuleRow, 4].ToString();
+                    Fields.addrMail = dataArrMail[Fields.addrMailRow, 1].ToString();
 
                     if (Fields.paymentState == "Оплачено")
                     {
@@ -75,6 +78,7 @@ namespace DisableRemoteAccess
                     Fields.paymentStateRow++;
                     Fields.addrNameRuleRow++;
                     Fields.serverNameRow++;
+                    Fields.addrMailRow++;
                 }
            
                 ObjWorkBook.Close();
@@ -93,7 +97,7 @@ namespace DisableRemoteAccess
                 label1.Text ="Не удалось запустить мониторинг!\n1. Возможно фай xlsx открыт, перемещен или переименован. \n2. Не заполнена одна из требуемых строк для проверки оплаты.";
             }
 
-            await Task.Delay(TimeSpan.FromMinutes(5));
+            await Task.Delay(TimeSpan.FromMinutes(15));
             openXlsx();
         }
 
@@ -105,6 +109,7 @@ namespace DisableRemoteAccess
               Fields.paymentStateRow = 1;
               Fields.addrNameRuleRow = 1;
               Fields.serverNameRow = 1;
+              Fields.addrMailRow = 1;
         }
         private void button1_Click(object sender, EventArgs e)
         {

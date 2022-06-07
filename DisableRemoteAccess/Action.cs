@@ -9,8 +9,8 @@ namespace DisableRemoteAccess
 {
     public static class Action
     {
-        public static string USER = "yg";
-        public static string PASS = "Gfccdjhl,71924";       
+        public static string USER = "apiUser";
+        public static string PASS = "password";       
         public static void enable()
         {
             try
@@ -46,7 +46,6 @@ namespace DisableRemoteAccess
                 //  connection exception
             }
         }
-
         public static void disable()
         {
             try

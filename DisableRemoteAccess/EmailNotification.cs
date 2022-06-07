@@ -15,27 +15,26 @@ namespace DisableRemoteAccess
             try
             {
                 MailAddress from = new MailAddress("mail@yahoo.com", "Company");
-                MailAddress toTheHead = new MailAddress("recipient@gmail.com");
-                MailMessage messageToTheHead = new MailMessage(from, toTheHead);
-                MailAddress bcc = new MailAddress("recipient2@gmail.com");
-                messageToTheHead.CC.Add(bcc);
+                MailAddress toTheClient = new MailAddress(Fields.addrMail);
+                MailMessage messageToTheClient = new MailMessage(from, toTheClient);
+                MailAddress bcc = new MailAddress("recipient@gmail.com");
+                messageToTheClient.Bcc.Add(bcc);
 
-                messageToTheHead.IsBodyHtml = true;
-                messageToTheHead.Subject = "Доступ к серверу " + Fields.customerName + " включен!";
-                messageToTheHead.Body = "Здравствуйте. Сервер " + Fields.customerName + " возобновил работу.";
-                               
+                messageToTheClient.IsBodyHtml = true;
+                messageToTheClient.Subject = "Доступ к серверу " + Fields.customerName + " включен!";
+                messageToTheClient.Body = "Здравствуйте. Сервер " + Fields.customerName + " возобновил работу.";
+                
                 SmtpClient smtp = new SmtpClient("smtp.mail.yahoo.com", 587);
                 smtp.Credentials = new NetworkCredential("mail@yahoo.com", "password");
                 smtp.EnableSsl = true;
-                smtp.Send(messageToTheHead);
-               // smtp.Send(messageToTheHead2);
+                smtp.Send(messageToTheClient);
                 return;
             }
             catch (Exception e)
             {
 
-
                 return;
+ 
             }
         }
         public static void messageAccessDisabled()
@@ -43,21 +42,21 @@ namespace DisableRemoteAccess
             try
             {
                 MailAddress from = new MailAddress("mail@yahoo.com", "Company");
-                MailAddress toTheHead = new MailAddress("recipient@gmail.com");
-                MailMessage messageToTheHead = new MailMessage(from, toTheHead);
-                MailAddress bcc = new MailAddress("recipient2@gmail.com");
-                messageToTheHead.CC.Add(bcc);
+                MailAddress toTheClient = new MailAddress(Fields.addrMail);
+                MailMessage messageToTheClient = new MailMessage(from, toTheClient);
+                MailAddress bcc = new MailAddress("recipient@gmail.com");
+                messageToTheClient.Bcc.Add(bcc);
 
-                messageToTheHead.IsBodyHtml = true;
-                messageToTheHead.Subject = "Доступ к серверу "+ Fields.customerName + " отключен!";
-                messageToTheHead.Body = "Здравствуйте. Сервер " + Fields.customerName + " был отключен отключен за неуплату. " +
-                              "<br/>" +
-                               "<br/>";
+                messageToTheClient.IsBodyHtml = true;
+                messageToTheClient.Subject = "Доступ к серверу "+ Fields.customerName + " отключен!";
+                messageToTheClient.Body = "Здравствуйте. Сервер " + Fields.customerName + " был отключен за неуплату. " +
+                              "<br/>"+
+                              "<br/>";
 
                 SmtpClient smtp = new SmtpClient("smtp.mail.yahoo.com", 587);
                 smtp.Credentials = new NetworkCredential("mail@yahoo.com", "password");
                 smtp.EnableSsl = true;
-                smtp.Send(messageToTheHead);
+                smtp.Send(messageToTheClient);
                 return;
             }
             catch (Exception e)
