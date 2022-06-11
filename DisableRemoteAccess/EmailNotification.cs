@@ -34,7 +34,6 @@ namespace DisableRemoteAccess
             {
 
                 return;
- 
             }
         }
         public static void messageAccessDisabled()
@@ -61,8 +60,6 @@ namespace DisableRemoteAccess
             }
             catch (Exception e)
             {
-
-
 
                 return;
             }

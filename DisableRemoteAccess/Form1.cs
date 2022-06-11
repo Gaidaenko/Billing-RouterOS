@@ -25,6 +25,7 @@ namespace DisableRemoteAccess
             Color launched = Color.Green;
             label1.ForeColor = launched;
             label1.Text = "Мониторинг оплаты запущен!";
+            label3.Text = null + "Должники:\n";
 
             try
             {
@@ -54,11 +55,11 @@ namespace DisableRemoteAccess
                 Rng = xlsApp.get_Range("A2", "D100");
                 var dataArr = (object[,])Rng.Value;
 
-                RngMail = xlsApp.get_Range("E2", "E100");                                    // диапазон для проверки мейлов в xlsx
-                var dataArrMail = (object[,])RngMail.Value;                                 // явно приводим диапазон к типу данных object двумерному массиву
+                RngMail = xlsApp.get_Range("E2", "E100");                                   
+                var dataArrMail = (object[,])RngMail.Value;                                
 
                 while (dataArr[Fields.customerNameRow, Fields.paymentStateRow] != null && dataArr[Fields.addrNameRuleRow, Fields.serverNameRow] != null && dataArrMail[Fields.addrMailRow, 1] != null)
-                {
+                {                    
                     Fields.customerName = dataArr[Fields.customerNameRow, 1].ToString();
                     Fields.paymentState = dataArr[Fields.paymentStateRow, 2].ToString();
                     Fields.serverName = dataArr[Fields.serverNameRow, 3].ToString();
@@ -70,7 +71,8 @@ namespace DisableRemoteAccess
                         Action.enable();
                     }
                     else
-                    {
+                    {                        
+                        label3.Text += "\n "+ Fields.customerName;
                         Action.disable();
                     } 
 
@@ -124,6 +126,11 @@ namespace DisableRemoteAccess
 
         }
         private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
         {
 
         }
