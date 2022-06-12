@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Action.cs" />
+    <Compile Include="EventLogStatus.cs" />
     <Compile Include="EmailNotification.cs" />
     <Compile Include="Fields.cs" />
     <Compile Include="Form1.cs">

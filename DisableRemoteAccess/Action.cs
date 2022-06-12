@@ -7,10 +7,10 @@ using tik4net;
 
 namespace DisableRemoteAccess
 {
-    public static class Action
+    public class Action
     {
-        public static string USER = "userApi";
-        public static string PASS = "password";       
+        public static string USER = "yg";
+        public static string PASS = "Gfccdjhl,71924";
         public static void enable()
         {
             try
@@ -29,12 +29,12 @@ namespace DisableRemoteAccess
                         var items = result.Words.GetEnumerator();
 
                         while (items.MoveNext())
-                        {
-                                
+                        {                               
                             if (items.Current.Key == "disabled" && items.Current.Value == "true")               
                             {
                                 // shutdown notice
                                 EmailNotification.messageAccessEnabled();
+                                EventLogStatus.eventLogDisabled();
                             }
                         }
                     } 
@@ -42,10 +42,13 @@ namespace DisableRemoteAccess
             }
             catch (Exception e)
             {
-
-                //  connection exception
-            }
+               //  connection exception
+                EventLogStatus.noAccessToGateway();
+                EmailNotification.messageNoAccessToGateway();
+                Fields.сonnectionError = "\nНевозможно подключится к " + Fields.customerName;
+            } 
         }
+
         public static void disable()
         {
             try
@@ -69,6 +72,7 @@ namespace DisableRemoteAccess
                             {
                                 //activation notice
                                 EmailNotification.messageAccessDisabled();
+                                EventLogStatus.eventLogEnabled();
                             }
                         }
                     }
@@ -76,9 +80,10 @@ namespace DisableRemoteAccess
             }
             catch (Exception e)
             {
-
                 // connection exception
-
+                EventLogStatus.noAccessToGateway();
+                EmailNotification.messageNoAccessToGateway();
+                Fields.сonnectionError = "\nНевозможно подключится к " + Fields.customerName;
             }
         }
     }
