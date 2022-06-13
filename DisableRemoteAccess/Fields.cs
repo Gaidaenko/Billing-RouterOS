@@ -14,8 +14,8 @@ namespace DisableRemoteAccess
         public static string serverName;
         public static string addrNameRule;
         public static string addrMail;
-        public static string сonnectionError;
 
+        public static int сonnectionError = 0;
         public static int customerNameRow = 1;                       
         public static int paymentStateRow = 1;                                                          
         public static int serverNameRow = 1;                          

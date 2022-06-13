@@ -9,8 +9,8 @@ namespace DisableRemoteAccess
 {
     public class Action
     {
-        public static string USER = "yg";
-        public static string PASS = "Gfccdjhl,71924";
+        public static string USER = "apiUser";
+        public static string PASS = "password";
         public static void enable()
         {
             try
@@ -34,7 +34,7 @@ namespace DisableRemoteAccess
                             {
                                 // shutdown notice
                                 EmailNotification.messageAccessEnabled();
-                                EventLogStatus.eventLogDisabled();
+                                EventLogStatus.eventLogDisabled();                                
                             }
                         }
                     } 
@@ -42,10 +42,10 @@ namespace DisableRemoteAccess
             }
             catch (Exception e)
             {
-               //  connection exception
+                //  connection exception
+                Fields.сonnectionError++;
                 EventLogStatus.noAccessToGateway();
-                EmailNotification.messageNoAccessToGateway();
-                Fields.сonnectionError = "\nНевозможно подключится к " + Fields.customerName;
+                EmailNotification.messageNoAccessToGateway();    
             } 
         }
 
@@ -81,9 +81,9 @@ namespace DisableRemoteAccess
             catch (Exception e)
             {
                 // connection exception
+                Fields.сonnectionError++;
                 EventLogStatus.noAccessToGateway();
                 EmailNotification.messageNoAccessToGateway();
-                Fields.сonnectionError = "\nНевозможно подключится к " + Fields.customerName;
             }
         }
     }

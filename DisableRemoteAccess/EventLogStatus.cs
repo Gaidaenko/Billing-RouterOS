@@ -51,7 +51,7 @@ namespace DisableRemoteAccess
                 EventLog.CreateEventSource(Source, Log);
             using (EventLog eventLog = new EventLog("Billing"))
             {
-                eventLog.Source = "Тo access to gateway";                       
+                eventLog.Source = "No access to gateway";                       
                 eventLog.WriteEntry(Event, EventLogEntryType.Error);
                 return;
             }

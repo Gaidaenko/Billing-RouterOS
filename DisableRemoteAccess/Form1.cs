@@ -27,12 +27,13 @@ namespace DisableRemoteAccess
             label1.ForeColor = launched;
             label1.Text = "Мониторинг оплаты запущен!";
             label3.Text = null + "Должники:\n";
+            label4.Text = null;
 
             try
             {
                 DateTime dateTime = DateTime.Now;
                 label2.Text = "Время запуска проверки\n " + dateTime.ToString();
-
+                
                 Excel.Application xlsApp = new Excel.Application();
                 Workbook ObjWorkBook = xlsApp.Workbooks.Open
                                     (Filename: Fields.fileXlsx,
@@ -56,11 +57,11 @@ namespace DisableRemoteAccess
                 Rng = xlsApp.get_Range("A2", "D100");
                 var dataArr = (object[,])Rng.Value;
 
-                RngMail = xlsApp.get_Range("E2", "E100");                              
+                RngMail = xlsApp.get_Range("E2", "E100");                            
                 var dataArrMail = (object[,])RngMail.Value;                           
-              
+
                 while (dataArr[Fields.customerNameRow, Fields.paymentStateRow] != null && dataArr[Fields.addrNameRuleRow, Fields.serverNameRow] != null && dataArrMail[Fields.addrMailRow, 1] != null)
-                {                   
+                {
                     Fields.customerName = dataArr[Fields.customerNameRow, 1].ToString();
                     Fields.paymentState = dataArr[Fields.paymentStateRow, 2].ToString();
                     Fields.serverName = dataArr[Fields.serverNameRow, 3].ToString();
@@ -81,13 +82,16 @@ namespace DisableRemoteAccess
                     Fields.paymentStateRow++;
                     Fields.addrNameRuleRow++;
                     Fields.serverNameRow++;
-                    Fields.addrMailRow++;
+                    Fields.addrMailRow++;         
+                }
 
+                if (Fields.сonnectionError != 0)
+                {
                     Color connError = Color.Red;
                     label4.ForeColor = connError;
-                    label4.Text += Fields.сonnectionError;
+                    label4.Text = "Присутствуют шлюзы к которым нельзя подключится.\nДля большей информации смотрите лог Windows, Billing!";
                 }
-           
+
                 ObjWorkBook.Close();
                 xlsApp.Application.Quit();
                 xlsApp = null;
@@ -104,7 +108,7 @@ namespace DisableRemoteAccess
                 label1.Text ="Не удалось запустить мониторинг!\n1. Возможно фай xlsx перемещен или переименован. \n2. Не заполнена одна из требуемых строк для проверки оплаты.";
             }
 
-            await Task.Delay(TimeSpan.FromMinutes(5));
+            await Task.Delay(TimeSpan.FromMinutes(10));
             openXlsx();
         }
 
@@ -117,10 +121,11 @@ namespace DisableRemoteAccess
               Fields.addrNameRuleRow = 1;
               Fields.serverNameRow = 1;
               Fields.addrMailRow = 1;
+              Fields.сonnectionError = 0;
         }
         private void button1_Click(object sender, EventArgs e)
         {
-              openXlsx();
+            openXlsx();
         }
         private void adoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -138,7 +143,7 @@ namespace DisableRemoteAccess
         {
             
         }
-        private void label4_Click(object sender, EventArgs e)
+        public void label4_Click(object sender, EventArgs e)
         {
 
         }

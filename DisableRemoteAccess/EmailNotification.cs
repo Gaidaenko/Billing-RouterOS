@@ -70,7 +70,7 @@ namespace DisableRemoteAccess
                 MailMessage messageToTheSupport = new MailMessage(from, inSupportOff);
 
                 messageToTheSupport.IsBodyHtml = true;
-                messageToTheSupport.Subject = "Нет доступа к маршрутизатору клиента" + Fields.customerName;
+                messageToTheSupport.Subject = "Нет доступа к маршрутизатору клиента " + Fields.customerName;
                 messageToTheSupport.Body = "Нет доступа к маршрутизатору клиента " + Fields.customerName + 
                               "<br/>" +
                               "<br/>";
