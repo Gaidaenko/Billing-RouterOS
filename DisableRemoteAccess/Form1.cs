@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Timer = System.Windows.Forms.Timer;
+using System.IO;
 
 namespace DisableRemoteAccess
 {
@@ -20,7 +21,6 @@ namespace DisableRemoteAccess
             InitializeComponent();
             openXlsx();
         }
-
         public async Task openXlsx()
         {
             Color launched = Color.Green;
@@ -29,11 +29,11 @@ namespace DisableRemoteAccess
             label3.Text = null + "Должники:\n";
             label4.Text = null;
 
-            try
+            if (File.Exists(Fields.fileXlsx))
             {
                 DateTime dateTime = DateTime.Now;
                 label2.Text = "Время запуска проверки\n " + dateTime.ToString();
-                
+
                 Excel.Application xlsApp = new Excel.Application();
                 Workbook ObjWorkBook = xlsApp.Workbooks.Open
                                     (Filename: Fields.fileXlsx,
@@ -53,28 +53,39 @@ namespace DisableRemoteAccess
                 Worksheet worksheet = xlsApp.Worksheets[1];
                 worksheet.Activate();
 
-                Range Rng, RngMail; 
-                Rng = xlsApp.get_Range("A2", "D100");
-                var dataArr = (object[,])Rng.Value;
+                Range RngClients, RngState, RngServer, RngRule, RngMail;
 
-                RngMail = xlsApp.get_Range("E2", "E100");                            
-                var dataArrMail = (object[,])RngMail.Value;                           
+                RngClients = xlsApp.get_Range("A2", "A100");                           
+                var dataArrClients = (object[,])RngClients.Value;
 
-                while (dataArr[Fields.customerNameRow, Fields.paymentStateRow] != null && dataArr[Fields.addrNameRuleRow, Fields.serverNameRow] != null && dataArrMail[Fields.addrMailRow, 1] != null)
+                RngState = xlsApp.get_Range("B2", "B100");                           
+                var dataArrState = (object[,])RngState.Value;
+
+                RngServer = xlsApp.get_Range("C2", "C100");                           
+                var dataArrServer = (object[,])RngServer.Value;
+
+                RngRule = xlsApp.get_Range("D2", "D100");                            
+                var dataArrRule = (object[,])RngRule.Value;
+
+                RngMail = xlsApp.get_Range("E2", "E100");                                              
+                var dataArrMail = (object[,])RngMail.Value;                                 
+
+                while (dataArrClients[Fields.customerNameRow, 1] != null && dataArrState[Fields.addrNameRuleRow, 1] != null && 
+                       dataArrServer[Fields.addrNameRuleRow, 1] != null && dataArrMail[Fields.addrMailRow, 1] != null && dataArrMail[Fields.addrMailRow, 1] != null)
                 {
-                    Fields.customerName = dataArr[Fields.customerNameRow, 1].ToString();
-                    Fields.paymentState = dataArr[Fields.paymentStateRow, 2].ToString();
-                    Fields.serverName = dataArr[Fields.serverNameRow, 3].ToString();
-                    Fields.addrNameRule = dataArr[Fields.addrNameRuleRow, 4].ToString();
+                    Fields.customerName = dataArrClients[Fields.customerNameRow, 1].ToString();
+                    Fields.paymentState = dataArrState[Fields.paymentStateRow, 1].ToString();
+                    Fields.serverName = dataArrServer[Fields.serverNameRow, 1].ToString();
+                    Fields.addrNameRule = dataArrRule[Fields.addrNameRuleRow, 1].ToString();
                     Fields.addrMail = dataArrMail[Fields.addrMailRow, 1].ToString();
 
                     if (Fields.paymentState == "Оплачено")
                     {
-                        Action.enable(); 
+                        Action.enable();
                     }
                     else
-                    {                        
-                        label3.Text += "\n "+ Fields.customerName;
+                    {
+                        label3.Text += "\n " + Fields.customerName;
                         Action.disable();
                     }
 
@@ -82,7 +93,7 @@ namespace DisableRemoteAccess
                     Fields.paymentStateRow++;
                     Fields.addrNameRuleRow++;
                     Fields.serverNameRow++;
-                    Fields.addrMailRow++;         
+                    Fields.addrMailRow++;
                 }
 
                 if (Fields.сonnectionError != 0)
@@ -96,18 +107,22 @@ namespace DisableRemoteAccess
                 xlsApp.Application.Quit();
                 xlsApp = null;
                 ObjWorkBook = null;
-                dataArr = null;
-                Rng = null;               
+                dataArrClients = null;
+                dataArrState = null;
+                dataArrServer = null;
+                dataArrRule = null;
+                dataArrMail = null;
 
                 closeXlsx();
             }
-            catch (Exception s)
+            if (!File.Exists(Fields.fileXlsx))
             {
                 Color warning = Color.Red;
                 label1.ForeColor = warning;
-                label1.Text ="Не удалось запустить мониторинг!\n1. Возможно фай xlsx перемещен или переименован. \n2. Не заполнена одна из требуемых строк для проверки оплаты.";
+                label1.Text = "Не удалось запустить мониторинг!\n1. Возможно фай xlsx перемещен или переименован. \n2. Не заполнена одна из требуемых строк для проверки оплаты.";
+                
+                return;
             }
-
             await Task.Delay(TimeSpan.FromMinutes(10));
             openXlsx();
         }
@@ -125,7 +140,13 @@ namespace DisableRemoteAccess
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            openXlsx();
+              Fields.customerNameRow = 1;
+              Fields.paymentStateRow = 1;
+              Fields.addrNameRuleRow = 1;
+              Fields.serverNameRow = 1;
+              Fields.addrMailRow = 1;
+              Fields.сonnectionError = 0;
+              openXlsx();
         }
         private void adoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -150,6 +171,6 @@ namespace DisableRemoteAccess
         private void Form1_Load(object sender, EventArgs e)
         {
 
-        } 
+        }
     }
 }
