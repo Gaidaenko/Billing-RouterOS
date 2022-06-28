@@ -4,12 +4,9 @@ using Excel = Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Interop.Excel;
 using System.Linq;
 using System.Windows.Forms;
-using tik4net;
 using Color = System.Drawing.Color;
 using System.Diagnostics;
-using System.Threading;
 using System.Threading.Tasks;
-using Timer = System.Windows.Forms.Timer;
 using System.IO;
 
 namespace DisableRemoteAccess
@@ -19,7 +16,16 @@ namespace DisableRemoteAccess
         public Form1()
         {
             InitializeComponent();
-            openXlsx();
+            Run();
+        }
+        public async Task Run()
+        {
+            while (true)
+            {
+                openXlsx();
+                closeXlsx();
+                await Task.Delay(TimeSpan.FromSeconds(15));
+            }
         }
         public async Task openXlsx()
         {
@@ -112,25 +118,18 @@ namespace DisableRemoteAccess
                 dataArrServer = null;
                 dataArrRule = null;
                 dataArrMail = null;
-
-                closeXlsx();
             }
             if (!File.Exists(Fields.fileXlsx))
             {
                 Color warning = Color.Red;
                 label1.ForeColor = warning;
-                label1.Text = "Не удалось запустить мониторинг!\n1. Возможно фай xlsx перемещен или переименован. \n2. Не заполнена одна из требуемых строк для проверки оплаты.";
-                
+                label1.Text = "Не удалось запустить мониторинг!\n1. Возможно фай xlsx перемещен или переименован. \n2. Не заполнена одна из требуемых строк для проверки оплаты.";              
                 return;
             }
-            await Task.Delay(TimeSpan.FromMinutes(10));
-            openXlsx();
         }
-
         public void closeXlsx()
         {
-              Process List = Process.GetProcessesByName("EXCEL").Last();
-           
+              Process List = Process.GetProcessesByName("EXCEL").Last();         
               Fields.customerNameRow = 1;
               Fields.paymentStateRow = 1;
               Fields.addrNameRuleRow = 1;

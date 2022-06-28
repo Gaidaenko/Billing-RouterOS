@@ -24,7 +24,6 @@ namespace DisableRemoteAccess
                 return;
             }
         }
-
         public static void eventLogDisabled()
         { 
             string Event = "Внимание: доступ к серверу "+ Fields.customerName + " включен.";
@@ -40,7 +39,6 @@ namespace DisableRemoteAccess
                 return;
             }
         }
-
         public static void noAccessToGateway()
         {
             string Event = "Не удалось подключится к " + Fields.serverName;

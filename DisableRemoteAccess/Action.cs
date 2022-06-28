@@ -48,7 +48,6 @@ namespace DisableRemoteAccess
                 EmailNotification.messageNoAccessToGateway();    
             } 
         }
-
         public static void disable()
         {
             try
