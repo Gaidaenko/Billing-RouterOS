@@ -24,7 +24,7 @@ namespace DisableRemoteAccess
             {
                 openXlsx();
                 closeXlsx();
-                await Task.Delay(TimeSpan.FromSeconds(15));
+                await Task.Delay(TimeSpan.FromMinutes(1));
             }
         }
         public async Task openXlsx()
@@ -34,6 +34,13 @@ namespace DisableRemoteAccess
             label1.Text = "Мониторинг оплаты запущен!";
             label3.Text = null + "Должники:\n";
             label4.Text = null;
+
+            Fields.customerNameRow = 1;
+            Fields.paymentStateRow = 1;
+            Fields.addrNameRuleRow = 1;
+            Fields.serverNameRow = 1;
+            Fields.addrMailRow = 1;
+            Fields.сonnectionError = 0;
 
             if (File.Exists(Fields.fileXlsx))
             {
@@ -129,22 +136,11 @@ namespace DisableRemoteAccess
         }
         public void closeXlsx()
         {
-              Process List = Process.GetProcessesByName("EXCEL").Last();         
-              Fields.customerNameRow = 1;
-              Fields.paymentStateRow = 1;
-              Fields.addrNameRuleRow = 1;
-              Fields.serverNameRow = 1;
-              Fields.addrMailRow = 1;
-              Fields.сonnectionError = 0;
+              Process List = Process.GetProcessesByName("EXCEL").Last();
+              return;
         }
         private void button1_Click(object sender, EventArgs e)
         {
-              Fields.customerNameRow = 1;
-              Fields.paymentStateRow = 1;
-              Fields.addrNameRuleRow = 1;
-              Fields.serverNameRow = 1;
-              Fields.addrMailRow = 1;
-              Fields.сonnectionError = 0;
               openXlsx();
         }
         private void adoutToolStripMenuItem_Click(object sender, EventArgs e)
